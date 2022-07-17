@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <div className="flex justify-between items-center p-5 bg-white">
+    <div className="flex justify-between items-center p-5 bg-white border-b border-gray-300">
       <div>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Uber_Eats_2020_logo.svg/2560px-Uber_Eats_2020_logo.svg.png"
