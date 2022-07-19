@@ -3,11 +3,17 @@ import {
   MdRestaurantMenu,
   MdReceipt,
   MdOutlineLogout,
+  MdSupervisorAccount,
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 function AdminMenu() {
   return (
     <div className="flex justify-center my-5 space-x-2">
+      <Link to="/admin/profile">
+        <div className="bg-black p-4 rounded-full hover:bg-gray-600">
+          <MdSupervisorAccount color="white" size="28" />
+        </div>
+      </Link>
       <Link to="/admin/restaurant">
         <div className="bg-black p-4 rounded-full hover:bg-gray-600">
           <MdRestaurant color="white" size="28" />

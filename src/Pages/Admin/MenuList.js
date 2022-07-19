@@ -1,19 +1,17 @@
 import AdminMenu from "../../Components/AdminMenu";
-import {
-  MdModeEditOutline,
-  MdDelete,
-  MdAddCircle,
-  MdAdd,
-} from "react-icons/md";
+import { MdModeEditOutline, MdDelete, MdAdd } from "react-icons/md";
+import { Link } from "react-router-dom";
 function MenuList() {
   return (
     <div>
       <AdminMenu />
       <div className="flex justify-center">
         <div>
-          <button className="bg-green-400 p-2 flex items-center text-sm font-bold mb-2">
-            <MdAdd size={20} /> Add Item
-          </button>
+          <Link to="/admin/menu/new">
+            <button className="bg-green-400 p-2 flex items-center text-sm font-bold mb-2">
+              <MdAdd size={20} /> Add Item
+            </button>
+          </Link>
           <table>
             <tr>
               <th>Image</th>

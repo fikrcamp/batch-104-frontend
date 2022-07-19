@@ -1,5 +1,6 @@
 import { FiSearch, FiArrowRight } from "react-icons/fi";
 import RestaurantCard from "../Components/RestaurantCard";
+import { Link } from "react-router-dom";
 function Home() {
   return (
     <div>
@@ -25,10 +26,12 @@ function Home() {
       <div className="p-5">
         <div className="flex justify-between items-center">
           <h2 className="font-bold text-2xl">Restaurants Near You!</h2>
-          <div className="flex items-center">
-            <h3>View All</h3>
-            <FiArrowRight />
-          </div>
+          <Link to="/list">
+            <div className="flex items-center">
+              <h3>View All</h3>
+              <FiArrowRight />
+            </div>
+          </Link>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
           <RestaurantCard />
