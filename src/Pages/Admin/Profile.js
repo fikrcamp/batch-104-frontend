@@ -1,5 +1,25 @@
 import AdminMenu from "../../Components/AdminMenu";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 function Profile() {
+  const [changeInputs, setChangeInputs] = useState({});
+
+  async function handleChangePassword() {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        "http://localhost:8000/user/changePassword",
+        changeInputs,
+        { headers: { authorization: token } }
+      );
+      toast.success(res.data.message);
+    } catch (e) {
+      console.log(e);
+      toast.error(e.response.data.message);
+    }
+  }
+
   return (
     <div>
       <AdminMenu />
@@ -30,19 +50,39 @@ function Profile() {
               type="text"
               className="input w-full"
               placeholder="Old Password"
+              onChange={(e) =>
+                setChangeInputs({
+                  ...changeInputs,
+                  oldPassword: e.target.value,
+                })
+              }
             />
             <input
               type="text"
               className="input w-full"
               placeholder="New Password"
+              onChange={(e) =>
+                setChangeInputs({
+                  ...changeInputs,
+                  newPassword: e.target.value,
+                })
+              }
             />
             <input
               type="text"
               className="input w-full"
               placeholder="Confirm New Password"
+              onChange={(e) =>
+                setChangeInputs({
+                  ...changeInputs,
+                  confirmNewPassword: e.target.value,
+                })
+              }
             />
             <div className="flex justify-center">
-              <button className="btn">Change Password</button>
+              <button className="btn" onClick={handleChangePassword}>
+                Change Password
+              </button>
             </div>
           </div>
         </div>

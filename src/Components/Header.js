@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../Utils/userContext";
 
 function Header() {
+  const { user } = useContext(UserContext);
   return (
     <div className="flex justify-between items-center p-5 bg-white drop-shadow-md">
       <div>
@@ -12,23 +15,24 @@ function Header() {
           />
         </Link>
       </div>
-      {/* <div className="space-x-2">
-        <Link to="/">Home</Link>
-        <Link to="/list">List</Link>
-        <Link to="/Home">About</Link>
-        <Link to="/Home">Contact</Link>
-      </div> */}
+
       <div>
-        {/* <Link to="/login">
-          <button className="btn">Login</button>
-        </Link> */}
-        <Link to="/admin/order">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-            alt="profile"
-            className="h-12 rounded-full"
-          />
-        </Link>
+        {user ? (
+          <Link to="/admin/order">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+              alt="profile"
+              className="h-12 rounded-full"
+            />
+          </Link>
+        ) : (
+          <Link to="/login">
+            <button className="btn">Login</button>
+          </Link>
+        )}
+        {/*  */}
+
+        {/*  */}
       </div>
     </div>
   );
