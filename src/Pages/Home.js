@@ -1,7 +1,15 @@
 import { FiSearch, FiArrowRight } from "react-icons/fi";
 import RestaurantCard from "../Components/RestaurantCard";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 function Home() {
+  const [restaurants, setRestaurants] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/restaurant")
+      .then((res) => setRestaurants(res.data.restaurants));
+  });
   return (
     <div>
       {/* BANNER */}
@@ -34,10 +42,9 @@ function Home() {
           </Link>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
+          {restaurants.map((restaurant) => (
+            <RestaurantCard restaurant={restaurant} />
+          ))}
         </div>
       </div>
       {/* NEAR YOU */}
