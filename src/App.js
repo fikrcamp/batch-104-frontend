@@ -50,6 +50,7 @@ function App() {
             <Route path="order" element={<OrderList />} />
             <Route path="profile" element={<Profile />} />
             <Route path="menu/new" element={<MenuForm />} />
+            <Route path="menu/edit/:id" element={<MenuForm />} />
           </Route>
         </Routes>
         <ToastContainer

@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import MenuItem from "../Components/MenuItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 function Restaurant() {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState([]);
@@ -11,6 +12,7 @@ function Restaurant() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const [customer, setCustomer] = useState({});
   useEffect(() => {
     axios.get(`http://localhost:8000/restaurant/${id}`).then((res) => {
       setRestaurant(res.data.restaurant);
@@ -62,8 +64,23 @@ function Restaurant() {
     const filtered = cart.filter((cartItem) => cartItem.id !== item.id);
     setCart(filtered);
 
-    const subTotal = item.qty * item.price;
+    const subTotal = item.qty * item.price; //60
     setTotal(total - subTotal);
+  }
+
+  async function handleOrder() {
+    const data = {
+      ...customer,
+      cart,
+      restaurant: id,
+    };
+    // console.log(data);
+
+    await axios.post("http://localhost:8000/order", data);
+    toast.success("create order");
+    setCart([]);
+    setTotal(0);
+    //code
   }
 
   if (loading) return <h1>Loading....</h1>;
@@ -134,11 +151,55 @@ function Restaurant() {
             <h2 className="font-bold">Sub-Total</h2>
             <h2>${total === 0 ? 0 : total + 2}</h2>
           </div>
-          <Link to="/order">
-            <button className="bg-black w-full text-white p-3 text-center rounded-md mt-4 font-bold">
-              Place Order
-            </button>
-          </Link>
+          {cart.length > 0 && (
+            <>
+              <div className="space-y-2 mt-5">
+                <h2 className="font-bold text-center">Your info</h2>
+                <input
+                  type="text"
+                  className="input w-full"
+                  placeholder="Name"
+                  onChange={(e) =>
+                    setCustomer({ ...customer, name: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  className="input w-full"
+                  placeholder="Address"
+                  onChange={(e) =>
+                    setCustomer({ ...customer, address: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  className="input w-full"
+                  placeholder="Phone Number"
+                  onChange={(e) =>
+                    setCustomer({ ...customer, phone: e.target.value })
+                  }
+                />
+
+                <select
+                  onChange={(e) =>
+                    setCustomer({ ...customer, payment: e.target.value })
+                  }
+                  className="input w-full"
+                >
+                  <option>Zaad</option>
+                  <option>Edahab </option>
+                  <option>Cash</option>
+                </select>
+              </div>
+
+              <button
+                className="bg-black w-full text-white p-3 text-center rounded-md mt-4 font-bold"
+                onClick={handleOrder}
+              >
+                Place Order
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -46,7 +46,9 @@ function MenuList() {
                 <td className="font-bold">{item.name}</td>
                 <td>${item.price}</td>
                 <td>
-                  <MdModeEditOutline className="text-blue-500" size={20} />
+                  <Link to={`/admin/menu/edit/${item._id}`}>
+                    <MdModeEditOutline className="text-blue-500" size={20} />
+                  </Link>
                 </td>
                 <td>
                   <MdDelete

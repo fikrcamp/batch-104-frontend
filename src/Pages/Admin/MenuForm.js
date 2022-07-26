@@ -1,11 +1,19 @@
 import AdminMenu from "../../Components/AdminMenu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 function MenuForm() {
-  const [inputs, setInputs] = useState();
+  const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/menu/${id}`)
+      .then((res) => setInputs(res.data.menu));
+  }, []);
+
   async function handleOnSubmit() {
     try {
       const token = localStorage.getItem("token");
@@ -26,6 +34,18 @@ function MenuForm() {
     }
   }
 
+  async function handleOnEdit() {
+    //edit
+    const formData = new FormData();
+    formData.append("name", inputs.name);
+    formData.append("price", inputs.price);
+    formData.append("description", inputs.description);
+    formData.append("category", inputs.category);
+    formData.append("image", inputs.image);
+    await axios.put(`http://localhost:8000/menu/${id}`, formData);
+    toast.success("Edited Item");
+  }
+
   return (
     <div>
       <AdminMenu />
@@ -39,6 +59,7 @@ function MenuForm() {
                 className="input w-full"
                 placeholder="Item Name"
                 onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+                value={inputs.name}
               />
               <input
                 type="text"
@@ -47,6 +68,7 @@ function MenuForm() {
                 onChange={(e) =>
                   setInputs({ ...inputs, price: e.target.value })
                 }
+                value={inputs.price}
               />
             </div>
             <input
@@ -56,12 +78,14 @@ function MenuForm() {
               onChange={(e) =>
                 setInputs({ ...inputs, description: e.target.value })
               }
+              value={inputs.description}
             />
             <select
               className="input w-full"
               onChange={(e) =>
                 setInputs({ ...inputs, category: e.target.value })
               }
+              value={inputs.category}
             >
               <option value="breakfast">Breakfast</option>
               <option value="lunch">Lunch</option>
@@ -75,9 +99,15 @@ function MenuForm() {
               }
             />
             <div className="flex justify-center">
-              <button className="btn" onClick={handleOnSubmit}>
-                Submit
-              </button>
+              {id ? (
+                <button className="btn" onClick={handleOnEdit}>
+                  Edit
+                </button>
+              ) : (
+                <button className="btn" onClick={handleOnSubmit}>
+                  Submit
+                </button>
+              )}
             </div>
           </div>
         </div>

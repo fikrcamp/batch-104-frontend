@@ -1,6 +1,21 @@
 import AdminMenu from "../../Components/AdminMenu";
-import { MdOutlineVisibility } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 function OrderList() {
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/order")
+      .then((res) => setOrders(res.data.orders));
+  });
+
+  async function handleOnDelete(id) {
+    await axios.delete(`http://localhost:8000/order/${id}`);
+    toast.success("deleted");
+    //code
+  }
   return (
     <div>
       <AdminMenu />
@@ -9,19 +24,33 @@ function OrderList() {
           <tr>
             <th>Name</th>
             <th>Phone Number</th>
-            <th>Date</th>
+            <th>Ordered</th>
             <th>Address</th>
-            <th>View</th>
+            <th>payment</th>
+            <th>delete</th>
           </tr>
-          <tr className="text-sm text-center">
-            <td>Ali</td>
-            <td className="font-bold">0632222</td>
-            <td>12/12/22</td>
-            <td>Jjigjiga Yar</td>
-            <td>
-              <MdOutlineVisibility className="text-blue-400" size={20} />
-            </td>
-          </tr>
+          {orders.map((order) => (
+            <tr className="text-sm text-center">
+              <td>{order.name}</td>
+              <td className="font-bold">{order.phone}</td>
+              <td>
+                {order.cart.map((item) => (
+                  <h1>
+                    {item.qty}x {item.name}
+                  </h1>
+                ))}
+              </td>
+              <td>{order.address}</td>
+              <td>{order.payment}</td>
+              <td>
+                <MdDelete
+                  className="text-red-400"
+                  size={20}
+                  onClick={() => handleOnDelete(order._id)}
+                />
+              </td>
+            </tr>
+          ))}
         </table>
       </div>
     </div>
